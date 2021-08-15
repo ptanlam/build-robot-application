@@ -10,20 +10,20 @@
 </template>
 
 <script>
-  export default {
-    name: 'HomePage',
-    props: {
-      msg: String,
-    },
-  };
+export default {
+  name: "HomePage",
+  props: {
+    msg: String,
+  },
+};
 </script>
 
 <style scoped>
-  .home {
-    text-align: center;
-  }
+.home {
+  text-align: center;
+}
 
-  .robot {
-    height: 300px;
-  }
+.robot {
+  height: 300px;
+}
 </style>
