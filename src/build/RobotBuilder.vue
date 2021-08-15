@@ -1,6 +1,5 @@
 <template>
-  <div class="content">
-    <div class="part-info" id="partInfo"></div>
+  <div v-if="availableParts" class="content">
     <div class="preview">
       <CollapsibleSection>
         <div class="preview-content">
@@ -21,11 +20,7 @@
     </div>
 
     <div class="top-row">
-      <div :class="[saleBorderClass, 'top', 'part']">
-        <!-- <div class="robot-name">
-          {{ selectedRobot.head.title }}
-          <span class="sale" v-if="selectedRobot.head.onSale">Saled!</span>
-        </div> -->
+      <div>
         <PartSelector
           :parts="availableParts.heads"
           position="top"
@@ -58,40 +53,26 @@
         @partSelected="(part) => (selectedRobot.base = part)"
       />
     </div>
-    <div>
-      <h1>Cart</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Robot</th>
-            <th class="cost">Cost</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(robot, index) in cart" :key="index">
-            <td>{{ robot.head.title }}</td>
-            <td class="cost">{{ robot.cost }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </div>
 </template>
 
 <script>
-import availableParts from "../data/parts";
-import createdHookMixin from "./created-hook-mixin";
-import PartSelector from "./PartSelector.vue";
-import CollapsibleSection from "../shared/CollapsibleSection.vue";
+import createdHookMixin from './created-hook-mixin';
+import PartSelector from './PartSelector.vue';
+import CollapsibleSection from '../shared/CollapsibleSection.vue';
+import { mapActions, mapState } from 'vuex';
 
 export default {
-  name: "RobotBuilder",
-
+  name: 'RobotBuilder',
   components: { PartSelector, CollapsibleSection },
+
+  created() {
+    this.getParts();
+  },
 
   data() {
     return {
-      availableParts,
+      addedToCart: false,
       cart: [],
       selectedRobot: {
         head: {},
@@ -106,20 +87,23 @@ export default {
   mixins: [createdHookMixin],
 
   computed: {
+    ...mapState('robots', { availableParts: 'parts' }),
+
     saleBorderClass() {
-      return this.selectedRobot.head.onSale ? "sale-border" : "";
+      return this.selectedRobot.head.onSale ? 'sale-border' : '';
     },
 
     headBorderStyle() {
       return {
         border: this.selectedRobot.head.onSale
-          ? "3px solid red"
-          : "3px solid #aaa",
+          ? '3px solid red'
+          : '3px solid #aaa',
       };
     },
   },
 
   methods: {
+    ...mapActions('robots', ['addRobotToCart', 'getParts']),
     addToCart() {
       const robot = this.selectedRobot;
       const cost =
@@ -128,8 +112,23 @@ export default {
         robot.torso.cost +
         robot.rightArm.cost +
         robot.base.cost;
-      this.cart.push(Object.assign({}, robot, { cost }));
+      this.addRobotToCart({ ...robot, cost }).then(() =>
+        this.$router.push('/cart')
+      );
+      this.addedToCart = true;
     },
+  },
+
+  beforeRouteLeave(to, from, next) {
+    if (this.addedToCart) {
+      next(true);
+    } else {
+      const response = confirm(
+        'You have not added your robot to your cart, ' +
+          'are you sure you want to leave?'
+      );
+      next(response);
+    }
   },
 };
 </script>

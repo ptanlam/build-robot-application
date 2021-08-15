@@ -1,26 +1,19 @@
 <template>
   <div class="part" :class="position">
-    <img
-      :src="selectedPart.src"
-      title="arm"
-      @click="showPartInfo = !showPartInfo"
-    />
+    <router-link
+      :to="{
+        name: 'Parts',
+        params: {
+          id: this.selectedPart.id,
+          partType: this.selectedPart.type,
+        },
+      }"
+    >
+      <img :src="selectedPart.src" title="arm" />
+    </router-link>
     <button @click="selectPreviousPart()" class="prev-selector"></button>
     <button @click="selectNextPart()" class="next-selector"></button>
     <span class="sale" v-show="selectedPart.onSale">Sale!</span>
-
-    <teleport to="#partInfo" v-if="showPartInfo">
-      <div>
-        <div>
-          {{ selectedPart.cost }} {{ selectedPart.title }}
-          {{ selectedPart.type }}
-        </div>
-        <div>
-          {{ selectedPart.description }}
-        </div>
-        <hr />
-      </div>
-    </teleport>
   </div>
 </template>
 
@@ -42,13 +35,13 @@ export default {
       type: String,
       required: true,
       validator(value) {
-        return ["left", "right", "top", "bottom", "center"].includes(value);
+        return ['left', 'right', 'top', 'bottom', 'center'].includes(value);
       },
     },
   },
 
   data() {
-    return { selectedPartIndex: 0, showPartInfo: false };
+    return { selectedPartIndex: 0 };
   },
 
   created() {
@@ -67,7 +60,7 @@ export default {
 
   methods: {
     emitSelectedPart() {
-      this.$emit("partSelected", this.selectedPart);
+      this.$emit('partSelected', this.selectedPart);
     },
 
     selectNextPart() {
@@ -113,6 +106,7 @@ export default {
 }
 .part img {
   width: 165px;
+  cursor: pointer;
 }
 .top {
   border-bottom: none;
@@ -150,21 +144,21 @@ export default {
 }
 .left .prev-selector:after,
 .right .prev-selector:after {
-  content: "\25B2";
+  content: '\25B2';
 }
 .left .next-selector:after,
 .right .next-selector:after {
-  content: "\25BC";
+  content: '\25BC';
 }
 .top .prev-selector:after,
 .bottom .prev-selector:after,
 .center .prev-selector:after {
-  content: "\25C4";
+  content: '\25C4';
 }
 .top .next-selector:after,
 .bottom .next-selector:after,
 .center .next-selector:after {
-  content: "\25BA";
+  content: '\25BA';
 }
 .center .prev-selector,
 .center .next-selector {

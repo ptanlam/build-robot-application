@@ -4,14 +4,15 @@
       <img src="../assets/robot-home.png" alt="" class="robot" />
     </div>
     <div class="get-started">
-      <a href="">Get started</a> building your first robot!
+      <router-link to="/build">Get started</router-link> building your first
+      robot!
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "HomePage",
+  name: 'HomePage',
   props: {
     msg: String,
   },

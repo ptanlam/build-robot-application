@@ -3,13 +3,17 @@ import { ref, computed, onMounted } from 'vue';
 export default function usePagination(filteredSearchResults) {
   const pageSize = 5;
   const currentPage = ref(1);
-  const nextPage = () => { currentPage.value += 1; };
-  const prevPage = () => { currentPage.value -= 1; };
+  const nextPage = () => {
+    currentPage.value += 1;
+  };
+  const prevPage = () => {
+    currentPage.value -= 1;
+  };
 
   onMounted(() => console.log('Mounted: useSearch'));
 
   const currentStartIndex = computed(
-    () => (currentPage.value - 1) * pageSize + 1,
+    () => (currentPage.value - 1) * pageSize + 1
   );
 
   const currentEndIndex = computed(() => {

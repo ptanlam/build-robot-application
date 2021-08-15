@@ -7,29 +7,46 @@
       />
     </div>
     <div class="filters">
-      <div><button @click="applyFilters({type:'heads'})">Filter for Heads</button></div>
-      <div><button @click="applyFilters({type:'arms'})">Filter for Arms</button></div>
-      <div><button @click="applyFilters({type:'torsos'})">Filter for Torsos</button></div>
-      <div><button @click="applyFilters({type:'bases'})">Filter for Bases</button></div>
+      <div>
+        <button @click="applyFilters({ type: 'heads' })">
+          Filter for Heads
+        </button>
+      </div>
+      <div>
+        <button @click="applyFilters({ type: 'arms' })">Filter for Arms</button>
+      </div>
+      <div>
+        <button @click="applyFilters({ type: 'torsos' })">
+          Filter for Torsos
+        </button>
+      </div>
+      <div>
+        <button @click="applyFilters({ type: 'bases' })">
+          Filter for Bases
+        </button>
+      </div>
       <div><button @click="clearFilters()">Clear Filters</button></div>
-      <div>Filters: {{filters}}</div>
+      <div>Filters: {{ filters }}</div>
     </div>
   </div>
   <div>
     <ul>
       <li v-for="(result, index) in pagedResults" :key="index">
-        <div><img :src="result.src"/></div>
+        <div><img :src="result.src" /></div>
         <div>
-          <div class="title">{{result.title}}</div>
-          <div>{{result.description}}</div>
-          <div>Type: {{result.type.substring(0, result.type.length -1)}}</div>
+          <div class="title">{{ result.title }}</div>
+          <div>{{ result.description }}</div>
+          <div>
+            Type: {{ result.type.substring(0, result.type.length - 1) }}
+          </div>
         </div>
       </li>
     </ul>
   </div>
   <div>
     <button @click="prevPage()" class="button-link">Previous Page</button>
-    Showing {{currentStartIndex}} to {{currentEndIndex}} of {{resultCount}} results
+    Showing {{ currentStartIndex }} to {{ currentEndIndex }} of
+    {{ resultCount }} results
     <button @click="nextPage()" class="button-link">Next Page</button>
   </div>
 </template>
@@ -44,12 +61,8 @@ export default {
   setup(props) {
     const { searchResults, search } = useSearch(props.searchTerm);
 
-    const {
-      filters,
-      applyFilters,
-      clearFilters,
-      filteredResults,
-    } = useFilters(searchResults);
+    const { filters, applyFilters, clearFilters, filteredResults } =
+      useFilters(searchResults);
 
     const {
       currentPage,
@@ -80,18 +93,19 @@ export default {
 </script>
 <style scoped>
 input {
-  font-size:20px;
+  font-size: 20px;
   padding: 8px;
-  width:80%
+  width: 80%;
 }
 img {
-  width:50px;
-  margin-right:10px;
+  width: 50px;
+  margin-right: 10px;
 }
 tr {
-  margin-bottom:5px;
+  margin-bottom: 5px;
 }
-td, th {
+td,
+th {
   text-align: left;
 }
 ul {
@@ -105,9 +119,9 @@ li {
   font-weight: bold;
 }
 .button-link {
-  background: none!important;
+  background: none !important;
   border: none;
-  padding: 0!important;
+  padding: 0 !important;
   text-decoration: underline;
   cursor: pointer;
   color: #1e87ba;
