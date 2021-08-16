@@ -14,7 +14,7 @@
             {{ robot.head.title }}
           </td>
           <td class="cost">
-            {{ robot.cost }}
+            {{ currency(robot.cost, '$') }}
           </td>
         </tr>
       </tbody>
@@ -34,7 +34,7 @@
             {{ robot.head.title }}
           </td>
           <td class="cost">
-            {{ robot.cost }}
+            {{ currency(robot.cost, '$') }}
           </td>
         </tr>
       </tbody>
@@ -44,9 +44,14 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex';
+import currencyFilter from '../shared/currency-filter';
 
 export default {
   name: 'Cart',
+
+  methods: {
+    currency: currencyFilter,
+  },
 
   computed: {
     ...mapState('robots', ['cart']),
